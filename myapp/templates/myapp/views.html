@@ -1,59 +1,27 @@
-<!doctype html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <title>Python Course</title>
-</head>
+{% extends "myapp/base.html" %}
 
-<body>
-    <h2>商品一覧</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>商品名</th>
-                <th>価格</th>
-                <th>リンク</th>
-                <th>画像</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in data.sentakuki %}
-                {% if forloop.first %}
-                <tr>
-                    <td>{{ item.name }}</td>
-                    <td>￥{{ item.price }}</td>
-                    <td><a href="{{ item.url }}" target="_blank">Link</a></td>
-                    <td><img src="{{ item.image_url }}" alt="{{ item.name }}"></td>
-                </tr>
-                {%endif %}
+{% block headerTitle %}商品検索結果{% endblock %}
+{% block bodyTitle %}商品検索結果{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            {% for category, items in data.items %}
+            {% if items %}
+            {% with item=items.0 %}
+            <div class="col-md-3">
+                <div class="card">
+                    <img src="{{ item.image_url }}" class="card-img-top" alt="{{ item.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.name }}</h5>
+                        <p class="card-text">￥{{ item.price }}</p>
+                        <a href="{{ item.url }}" class="btn btn-primary" target="_blank">Link</a>
+                    </div>
+                </div>
+            </div>
+            {% endwith %}
+            {% endif %}
             {% endfor %}
-        </tbody>
-        <tbody>
-            {% for item in data.reizouko %}
-                {% if forloop.first %}
-                <tr>
-                    <td>{{ item.name }}</td>
-                    <td>￥{{ item.price }}</td>
-                    <td><a href="{{ item.url }}" target="_blank">Link</a></td>
-                    <td><img src="{{ item.image_url }}" alt="{{ item.name }}"></td>
-                </tr>
-                {%endif %}
-            {% endfor %}
-        </tbody>
-        <tbody>
-            {% for item in data.denshi %}
-                {% if forloop.first %}
-                <tr>
-                    <td>{{ item.name }}</td>
-                    <td>￥{{ item.price }}</td>
-                    <td><a href="{{ item.url }}" target="_blank">Link</a></td>
-                    <td><img src="{{ item.image_url }}" alt="{{ item.name }}"></td>
-                </tr>
-                {%endif %}
-            {% endfor %}
-        </tbody>
-    </table>
-</body>
-
-</html>
+        </div>
+    </div>
+{% endblock %}

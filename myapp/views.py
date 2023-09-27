@@ -33,7 +33,7 @@ def input_view(request):
         if form.is_valid():
             # フォームがバリデーションを通過した場合、データを処理
             params = {}
-            params['genre'] = form.cleaned_data['genre']
+            # params['genre'] = form.cleaned_data['genre']
             params['price_reizouko'] = form.cleaned_data['price_reizouko']
             params['price_denshi']  = form.cleaned_data['price_denshi']
             params['price_sentakuki'] = form.cleaned_data['price_sentakuki']
