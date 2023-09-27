@@ -76,8 +76,8 @@ def get_products_info(price, genre_id, sort):
             product_data = product_response.json()
             processed_data = None
             if (sort == 'limit'):
-                data_filtered_by_prices = [x for x in product_data["Items"] if int(x['Item']['itemPrice']) <= price]
-                processed_data = sorted(data_filtered_by_prices, key=lambda x: x['Item']['itemPrice'], reverse=True)
+                data_filtered_by_prices = list(filter(lambda x:int(x["Item"]["itemPrice"]) <= price, product_data["Items"]))
+                processed_data = sorted(data_filtered_by_prices, key=lambda x: abs(int(x["Item"]["itemPrice"]) - price))
             else:
                 processed_data = sorted(product_data["Items"], key=lambda x: abs(int(x['Item']['itemPrice']) - price))
             
