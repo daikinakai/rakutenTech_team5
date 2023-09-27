@@ -13,9 +13,13 @@ from .forms import MyForm
 
 def success_view(request):
     # 入力値をコンテキストに追加
-    username = request.GET.get("username")
+    params = {}
+    params['genre'] = request.GET.get("genre")
+    params['price_reizouko'] = request.GET.get("price_reizouko")
+    params['price_denshi'] = request.GET.get("price_denshi")
+    params['price_sentakuki'] = request.GET.get("price_sentakuki")
     # densirenjiPrice,reizoukoPrice,sentakutukiPrice = request.GET.get('densirenjiPrice', 'reizoukoPrice',"sentakukiPrice")
-    return render(request, 'myapp/views.html', {'username': username,})
+    return render(request, 'myapp/views.html', params)
 
 
 def input_view(request):
@@ -23,9 +27,14 @@ def input_view(request):
         form = MyForm(request.POST)
         if form.is_valid():
             # フォームがバリデーションを通過した場合、データを処理
-            username = form.cleaned_data['username']
+            params = {}
+            params['genre'] = form.cleaned_data['genre']
+            params['price_reizouko'] = form.cleaned_data['price_reizouko']
+            params['price_denshi']  = form.cleaned_data['price_denshi']
+            params['price_sentakuki'] = form.cleaned_data['price_sentakuki']
             # データを使用して何かを行います
-            return redirect('myapp:view_page')  # データが正常に処理された場合、リダイレクト
+            # return redirect('myapp:view_page')  # データが正常に処理された場合、リダイレクト
+            return render(request, 'myapp/views.html',params)
     else:
         form = MyForm()  # GETリクエストの場合、空のフォームを表示
     return render(request, 'myapp/home.html', {'form': form})
