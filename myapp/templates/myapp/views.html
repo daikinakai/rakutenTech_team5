@@ -8,11 +8,30 @@
 </head>
 
 <body>
-    <h2>データが正常に処理されました。</h2>
-    <p>genre: {{ genre }}</p>
-    <p>price_reizouko: {{price_reizouko}}</p>
-    <p>price_denshi: {{price_denshi}}</p>
-    <p>price_sentakuki: {{price_sentakuki}}</p>
+  <h2>データが正常に処理されました。</h2>
+  <!-- <p>genre: {{ genre }}</p>
+  <p>price_reizouko: {{price_reizouko}}</p>
+  <p>price_denshi: {{price_denshi}}</p>
+  <p>price_sentakuki: {{price_sentakuki}}</p> -->
+  <table>
+    <thead>
+      <tr>
+        <th>商品名</th>
+        <th>価格</th>
+        <th>リンク</th>
+        <th>画像</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for item in data %}
+      <tr>
+        <td>{{ item.Item.itemName }}</td>
+        <td>￥{{ item.Item.itemPrice}}</td>
+        <td><a href="{{ item.Item.itemUrl }}" target="_blank">Link</a></td>
+        <td><img src="{{ item.Item.mediumImageUrls.0.imageUrl }}" alt="{{ item.Item.itemName }}"></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
 </body>
-
 </html>
