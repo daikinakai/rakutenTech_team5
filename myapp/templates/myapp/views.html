@@ -23,12 +23,12 @@
       </tr>
     </thead>
     <tbody>
-    {% for item in data %}
+    {% for item in data.sentakuki %}
       <tr>
-        <td>{{ item.Item.itemName }}</td>
-        <td>￥{{ item.Item.itemPrice}}</td>
-        <td><a href="{{ item.Item.itemUrl }}" target="_blank">Link</a></td>
-        <td><img src="{{ item.Item.mediumImageUrls.0.imageUrl }}" alt="{{ item.Item.itemName }}"></td>
+        <td>{{ item.name }}</td>
+        <td>￥{{ item.price }}</td>
+        <td><a href="{{ item.url }}" target="_blank">Link</a></td>
+        <td><img src="{{ item.image_url }}" alt="{{ item.name }}"></td>
       </tr>
     {% endfor %}
     </tbody>
