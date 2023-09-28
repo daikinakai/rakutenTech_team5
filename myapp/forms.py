@@ -1,5 +1,6 @@
+from typing import Any
 from django import forms
-
+from django.core.exceptions import ValidationError
 
 class MyForm(forms.Form):
     # TODO:整数型
@@ -34,6 +35,15 @@ class CheckForm(forms.Form):
         widget=forms.CheckboxSelectMultiple,
         choices=home_appliances_choices,
     )
+    
+    def clean(self):
+        super().clean()
+        entries = self.cleaned_data
+        if len(entries["Need_items"]) > 3:
+            raise ValidationError('最大で3つまで選択できます。')
+        return entries
+
+
             
     
 class PriceForm(forms.Form):

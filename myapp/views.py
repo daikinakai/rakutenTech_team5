@@ -113,7 +113,7 @@ def price_view(request):
             return render(request, 'myapp/price.html', params)
 
         else:
-            redirect('myapp/home.html')
+            return redirect('myapp:home')
     else:
         return render(request, 'myapp/price.html', params)
 
