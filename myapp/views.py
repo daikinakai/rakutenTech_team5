@@ -21,22 +21,171 @@ def success_view(request):
         params["price_television"] = request.POST.get("price_television")
         params["price_soujiki"] = request.POST.get("price_soujiki")
         params["price_hair_dryer"] = request.POST.get("price_hair_dryer")
+        params['genre'] = request.POST.get("genre")
+        params['price_reizouko'] = request.POST.get("refrigerator_price")
+        params['price_denshi'] = request.POST.get("microwave_oven_price")
+        params['price_sentakuki'] = request.POST.get("washing_machine_price")
+        params['price_suihanki'] = request.POST.get("rice_cooker_price")
+        params['price_television'] = request.POST.get("television_price")
+        params['price_soujiki'] = request.POST.get("Vacuum_cleaner_price")
+        params['price_hair_dryer'] = request.POST.get("hair_dryer_price")
 
+        print(params)
         data = api(params)
 
         return render(request, "myapp/views.html", {"data": data})
 
+def input_view(request):
+    params = {
+        'headtitle' : 'team5',
+        'title' : 'Select genre & budget!',
+        'form' : CheckForm(),
+        'btn' : 'select',
+    }
+    return render(request, 'myapp/home.html', params)
+    
+def price_view(request):
+    params = {
+                'headtitle' : 'team5',
+                'title' : 'Select genere & budget!',
+                'btn' : 'get recommend',
+        }
+    if request.method == 'POST':
+        form = CheckForm(request.POST)
+        if form.is_valid():
+            temp = form.cleaned_data.get('Need_items') 
+
+            dyn_form = PriceForm()
+            for k in temp:
+                dyn_form.fields[k] = forms.IntegerField(\
+                            min_value=0)
+            dyn_form.fields['budget_over'] = forms.BooleanField(required=False)
+            params['form'] = dyn_form
+
+            return render(request, 'myapp/price.html', params)
+
+        else:
+            redirect('myapp/home.html')
+    else:
+        return render(request, 'myapp/price.html', params)
+
+
+
+# def input_view(request):
+#     if request.method == 'POST':
+#         form = MyForm(request.POST)
+#         if form.is_valid():
+#             # データが正常に処理された場合、リダイレクト
+#             return redirect('myapp:view_page')  
+#     else:
+#         form = MyForm()  # GETリクエストの場合、空のフォームを表示
+
+#     return render(request, 'myapp/home.html', {'form': form})
+
 
 def input_view(request):
-    if request.method == "POST":
-        form = MyForm(request.POST)
+    params = {
+        'headtitle' : 'team5',
+        'title' : 'Select genre & budget!',
+        'form' : CheckForm(),
+        'btn' : 'select',
+    }
+    return render(request, 'myapp/home.html', params)
+    
+def price_view(request):
+    params = {
+                'headtitle' : 'team5',
+                'title' : 'Select genere & budget!',
+                'btn' : 'get recommend',
+        }
+    if request.method == 'POST':
+        form = CheckForm(request.POST)
         if form.is_valid():
-            # データが正常に処理された場合、リダイレクト
-            return redirect("myapp:view_page")
-    else:
-        form = MyForm()  # GETリクエストの場合、空のフォームを表示
+            temp = form.cleaned_data.get('Need_items') 
 
-    return render(request, "myapp/home.html", {"form": form})
+            dyn_form = PriceForm()
+            for k in temp:
+                dyn_form.fields[k] = forms.IntegerField(\
+                            min_value=0)
+            dyn_form.fields['budget_over'] = forms.BooleanField(required=False)
+            params['form'] = dyn_form
+
+            return render(request, 'myapp/price.html', params)
+
+        else:
+            redirect('myapp/home.html')
+    else:
+        return render(request, 'myapp/price.html', params)
+
+
+
+# def input_view(request):
+#     if request.method == 'POST':
+#         form = MyForm(request.POST)
+#         if form.is_valid():
+#             # データが正常に処理された場合、リダイレクト
+#             return redirect('myapp:view_page')  
+#     else:
+#         form = MyForm()  # GETリクエストの場合、空のフォームを表示
+
+#     return render(request, 'myapp/home.html', {'form': form})
+
+
+
+
+# def input_view(request):
+#     params = {
+#         'headtitle' : 'team5',
+#         'title' : 'Select genre & budget!',
+#         'form' : CheckForm(),
+#         'btn' : 'select',
+#     }
+
+#     if request.method == 'POST':
+#         keys = request.POST.keys()
+#         if 'genre' in keys and 'Need_items' in keys:
+#             form = CheckForm(request.POST)
+#             if form.is_valid():
+#                 params = {
+#                     'headtitle' : 'team5',
+#                     'title' : 'Select genere & budget!',
+#                     'btn' : 'get recommend',
+#                 } 
+#                 temp = form.cleaned_data.get('Need_items')
+
+#                 dyn_form = PriceForm()
+#                 for k in temp:
+#                     dyn_form.fields[k.replace('_',' ')] = forms.IntegerField(\
+#                                 min_value=0)
+#                 dyn_form.fields['budget_over'] = forms.BooleanField(required=False)
+#                 params['form'] = dyn_form
+#                 return render(request, 'myapp/home.html', params)
+#             else:
+
+#                 return render(request, 'myapp/home.html', params)
+#         # 金額入力
+#         elif 'refrigerator price' in keys\
+#             or 'microwave oven price' in keys\
+#                 or 'washing machine price' in keys:
+
+#             for k in keys:
+#                 if k != 'csrfmiddlewaretoken':
+#                     params[k] = request.POST[k]
+
+            
+#             params['title'] = 'view_list'
+#             params['headtitle'] = 'team5'
+#             del params['form'], params['btn']
+            
+#             return redirect('myapp:view_page')  
+            
+            
+#     else:
+#         return render(request, 'myapp/home.html', params)
+    
+
+
+
 
 
 def api(params):
@@ -60,6 +209,9 @@ def api(params):
 
 
 def get_products_info(price, genre_id, sort):
+    if price == None or price == 0:
+        return 
+
     price = int(price)
 
     products = []
