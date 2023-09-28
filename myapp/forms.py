@@ -23,6 +23,10 @@ class CheckForm(forms.Form):
     ("refrigerator_price", "refrigerator"),
     ("microwave_oven_price", "microwave oven"),
     ("washing_machine_price", "washing machine"),
+    ("rice_cooker_price","rice cooker"),
+    ("television_price", "television"),
+    ("Vacuum_cleaner_price","vacuum cleaner"),
+    ("hair_dryer_price","hair dryer"),
     ]
 
     Need_items = forms.MultipleChoiceField(
