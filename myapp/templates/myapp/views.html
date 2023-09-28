@@ -1,33 +1,26 @@
+{% extends "myapp/base.html" %}
 
-<!doctype html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Python Course</title>
-</head>
-
-<body>
-  <h2>データが正常に処理されました。</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>商品名</th>
-        <th>価格</th>
-        <th>リンク</th>
-        <th>画像</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for item in data.sentakuki %}
-      <tr>
-        <td>{{ item.name }}</td>
-        <td>￥{{ item.price }}</td>
-        <td><a href="{{ item.url }}" target="_blank">Link</a></td>
-        <td><img src="{{ item.image_url }}" alt="{{ item.name }}"></td>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
-</body>
-</html>
+{% block headerTitle %}商品検索結果{% endblock %}
+{% block bodyTitle %}商品検索結果{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        {% for category, items in data.items %}
+        {% if items %}
+        {% with item=items.0 %}
+        <div class="col-md-3">
+            <div class="card">
+                <img src="{{ item.image_url }}" class="card-img-top" alt="{{ item.name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ item.name }}</h5>
+                    <p class="card-text">￥{{ item.price }}</p>
+                    <a href="{{ item.url }}" class="btn btn-primary" target="_blank">Link</a>
+                </div>
+            </div>
+        </div>
+        {% endwith %}
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
