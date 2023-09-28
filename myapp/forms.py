@@ -10,6 +10,10 @@ class MyForm(forms.Form):
     price_reizouko = forms.IntegerField()
     price_denshi = forms.IntegerField()
     price_sentakuki = forms.IntegerField()
+    price_suihanki = forms.IntegerField()
+    price_television = forms.IntegerField()
+    price_soujiki = forms.IntegerField()
+    price_hair_dryer = forms.IntegerField()
 
 class CheckForm(forms.Form):
     data = [('home appliances', 'home appliances')]

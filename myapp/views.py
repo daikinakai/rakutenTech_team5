@@ -17,6 +17,11 @@ def success_view(request):
         params['price_reizouko'] = request.POST.get("price_reizouko")
         params['price_denshi'] = request.POST.get("price_denshi")
         params['price_sentakuki'] = request.POST.get("price_sentakuki")
+        params['price_suihanki'] = request.POST.get("price_suihanki")
+        params['price_television'] = request.POST.get("price_television")
+        params['price_soujiki'] = request.POST.get("price_soujiki")
+        params['price_hair_dryer'] = request.POST.get("price_hair_dryer")
+
         data = api(params)
 
         return render(request, 'myapp/views.html', {'data': data })
@@ -87,13 +92,21 @@ def api(params):
     ITEM_GENRE_ID = {
         'reizouko': 565161,
         'sentakuki': 204491,
-        'denshi': 204585
+        'denshi': 204585,
+        'suihanki': 204586,
+        'television': 563843,
+        'soujiki': 204492,
+        'hair_dryer': 502792,
     }
     
     products_info = {
         'reizouko': get_products_info(params['price_reizouko'], ITEM_GENRE_ID['reizouko'], 'limit'),
         'sentakuki':get_products_info(params['price_sentakuki'], ITEM_GENRE_ID['sentakuki'], 'limit'),
-        'denshi': get_products_info(params['price_denshi'], ITEM_GENRE_ID['denshi'], 'limit')
+        'denshi': get_products_info(params['price_denshi'], ITEM_GENRE_ID['denshi'], 'limit'),
+        'suihanki': get_products_info(params['price_suihanki'], ITEM_GENRE_ID['suihanki'], 'limit'),
+        'television': get_products_info(params['price_television'], ITEM_GENRE_ID['television'], 'limit'),
+        'soujiki': get_products_info(params['price_soujiki'], ITEM_GENRE_ID['soujiki'], 'limit'),
+        'hair_dryer': get_products_info(params['price_hair_dryer'], ITEM_GENRE_ID['hair_dryer'], 'limit'),
     }
 
     return products_info
