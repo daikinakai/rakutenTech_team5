@@ -4,11 +4,9 @@ import requests
 from .forms import CheckForm, PriceForm,MyForm
 from django import forms
 
-
 APPLICATION_ID = "1098599347371457724"
 
 RANK_API = "https://app.rakuten.co.jp/services/api/IchibaItem/Ranking/20220601"
-
 
 def success_view(request):
     if request.method == 'POST':
@@ -25,8 +23,6 @@ def success_view(request):
         data = api(params)
 
         return render(request, 'myapp/views.html', {'data': data })
-
-
 
 # def input_view(request):
 #     params = {
@@ -111,7 +107,6 @@ def api(params):
 
     return products_info
     
-
 def get_products_info(price, genre_id, sort):
     
     price = int(price)
@@ -146,3 +141,20 @@ def get_products_info(price, genre_id, sort):
              
     except requests.exceptions.RequestException as e:
         return JsonResponse({"error": f"Request Error: {e}"}, status=500)
+
+def confirm_view(request):
+    total = 0
+    if request.method == 'POST':
+        processed_data = {}
+        for selected_category in (request.POST.getlist('selected_categories')):
+            index = request.POST.getlist('category').index(selected_category)
+            item = {
+                'name': request.POST.getlist('name')[index],
+                'url': request.POST.getlist('url')[index],
+                'price': request.POST.getlist('price')[index],
+                'image_url': request.POST.getlist('image_url')[index]
+            }
+            total += int(request.POST.getlist('price')[index])
+            processed_data[selected_category] = item
+        
+        return render(request, 'myapp/confirm.html', {'data': processed_data, 'total': total})
