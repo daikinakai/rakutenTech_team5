@@ -11,8 +11,10 @@
 </head>
 
 <body>
+    {% include "myapp/header.html" %}
     <h1>{% block bodyTitle %}{% endblock %}</h1>
     {% block content %}{% endblock %}
+    {% include "myapp/footer.html" %}
 </body>
 
 </html>
