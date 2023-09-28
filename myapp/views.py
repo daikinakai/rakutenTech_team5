@@ -27,55 +27,6 @@ def success_view(request):
         return render(request, "myapp/views.html", {"data": data})
 
 
-# def input_view(request):
-#     params = {
-#         'headtitle' : 'team5',
-#         'title' : 'Select genre & budget!',
-#         'form' : CheckForm(),
-#         'btn' : 'select',
-#     }
-
-#     if request.method == 'POST':
-#         keys = request.POST.keys()
-#         if 'genre' in keys and 'Need_items' in keys:
-#             form = CheckForm(request.POST)
-#             if form.is_valid():
-#                 params = {
-#                     'headtitle' : 'team5',
-#                     'title' : 'Select genere & budget!',
-#                     'btn' : 'get recommend',
-#                 }
-#                 temp = form.cleaned_data.get('Need_items')
-
-#                 dyn_form = PriceForm()
-#                 for k in temp:
-#                     dyn_form.fields[k.replace('_',' ')] = forms.IntegerField(\
-#                                 min_value=0)
-#                 dyn_form.fields['budget_over'] = forms.BooleanField(required=False)
-#                 params['form'] = dyn_form
-#                 return render(request, 'myapp/home.html', params)
-#             else:
-
-#                 return render(request, 'myapp/home.html', params)
-#         # 金額入力
-#         elif 'refrigerator price' in keys\
-#             or 'microwave oven price' in keys\
-#                 or 'washing machine price' in keys:
-
-#             for k in keys:
-#                 if k != 'csrfmiddlewaretoken':
-#                     params[k] = request.POST[k]
-
-
-#             params['title'] = 'view_list'
-#             params['headtitle'] = 'team5'
-#             del params['form'], params['btn']
-
-#             return redirect('myapp:view_page')
-
-
-#     else:
-#         return render(request, 'myapp/home.html', params)
 def input_view(request):
     if request.method == "POST":
         form = MyForm(request.POST)
@@ -143,3 +94,21 @@ def get_products_info(price, genre_id, sort):
 
     except requests.exceptions.RequestException as e:
         return JsonResponse({"error": f"Request Error: {e}"}, status=500)
+
+
+def confirm_view(request):
+    total = 0
+    if request.method == "POST":
+        processed_data = {}
+        for selected_category in request.POST.getlist("selected_categories"):
+            index = request.POST.getlist("category").index(selected_category)
+            item = {
+                "name": request.POST.getlist("name")[index],
+                "url": request.POST.getlist("url")[index],
+                "price": request.POST.getlist("price")[index],
+                "image_url": request.POST.getlist("image_url")[index],
+            }
+            total += int(request.POST.getlist("price")[index])
+            processed_data[selected_category] = item
+
+        return render(request, "myapp/confirm.html", {"data": processed_data, "total": total})
