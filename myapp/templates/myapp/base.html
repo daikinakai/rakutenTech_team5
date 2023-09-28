@@ -10,9 +10,11 @@
     </title>
 </head>
 
-<body>
-    <h1>{% block bodyTitle %}{% endblock %}</h1>
-    {% block content %}{% endblock %}
+<body style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
+    <div>
+        <h1>{% block bodyTitle %}{% endblock %}</h1>
+        {% block content %}{% endblock %}
+    </div>
 </body>
 
 </html>
