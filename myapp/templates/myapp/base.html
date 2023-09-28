@@ -12,8 +12,10 @@
 
 <body>
     {% include "myapp/header.html" %}
-    <h1>{% block bodyTitle %}{% endblock %}</h1>
-    {% block content %}{% endblock %}
+    <div style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
+        <h1>{% block bodyTitle %}{% endblock %}</h1>
+        {% block content %}{% endblock %}
+    </div>
     {% include "myapp/footer.html" %}
 </body>
 
