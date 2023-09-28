@@ -15,8 +15,8 @@ def success_view(request):
         params = {}
         params['genre'] = request.POST.get("genre")
         params['price_reizouko'] = request.POST.get("refrigerator_price")
-        params['price_denshi'] = request.POST.get("price_denshi")
-        params['price_sentakuki'] = request.POST.get("price_sentakuki")
+        params['price_denshi'] = request.POST.get("microwave_oven_price")
+        params['price_sentakuki'] = request.POST.get("washing_machine_price")
         params['price_suihanki'] = request.POST.get("price_suihanki")
         params['price_television'] = request.POST.get("price_television")
         params['price_soujiki'] = request.POST.get("price_soujiki")
