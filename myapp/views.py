@@ -146,15 +146,17 @@ def confirm_view(request):
     total = 0
     if request.method == 'POST':
         processed_data = {}
-        for selected_category in (request.POST.getlist('selected_categories')):
-            index = request.POST.getlist('category').index(selected_category)
-            item = {
-                'name': request.POST.getlist('name')[index],
-                'url': request.POST.getlist('url')[index],
-                'price': request.POST.getlist('price')[index],
-                'image_url': request.POST.getlist('image_url')[index]
-            }
-            total += int(request.POST.getlist('price')[index])
-            processed_data[selected_category] = item
+        categories = request.POST.getlist('category')
+        for selected_category in categories:
+            index = categories.index(selected_category)
+            if (request.POST.get(selected_category) != None):
+                item = {
+                    'name': request.POST.getlist('name')[index],
+                    'url': request.POST.getlist('url')[index],
+                    'price': request.POST.getlist('price')[index],
+                    'image_url': request.POST.getlist('image_url')[index]
+                }
+                total += int(request.POST.getlist('price')[index])
+                processed_data[selected_category] = item
         
         return render(request, 'myapp/confirm.html', {'data': processed_data, 'total': total})
