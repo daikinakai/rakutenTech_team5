@@ -3,7 +3,6 @@
 {% block headerTitle %}商品検索結果{% endblock %}
 {% block bodyTitle %}商品検索結果{% endblock %}
 {% block content %}
-<!-- {{ data }} -->
 <div class="container">
     <form id="itemSelectionForm" action="{% url 'myapp:confirm_page' %}" method="post">
         <div class="mt-5 text-right">
@@ -17,14 +16,15 @@
                 <div class="card">
                     <img src="{{ item.image_url }}" class="card-img-top" alt="{{ item.name }}">
                     <div class="card-body">
-                        <h5 class="card-title" >{{ item.name }}</h5>
+                        <h5 class="card-title">{{ item.name }}</h5>
                         <p class="card-text">￥{{ item.price }}</p>
                         <a href="{{ item.url }}" class="btn btn-primary" target="_blank">Link</a>
                     </div>
                     <div class="card-footer">
                         <div class="form-check form-check-inline">
                             <input type="hidden" name="category" value="{{ item.category }}">
-                            <input type="radio" class="form-check-input" name="{{ item.category }}" value="{{ item.item_code }}">
+                            <input type="radio" class="form-check-input" name="{{ item.category }}"
+                                value="{{ item.item_code }}">
                             <label class="form-check-label">選択</label>
                         </div>
                     </div>
@@ -35,8 +35,6 @@
             {% endif %}
             {% endfor %}
         </div>
-        
-        
     </form>
 </div>
 {% endblock %}
