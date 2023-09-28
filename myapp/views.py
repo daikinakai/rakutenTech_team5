@@ -14,7 +14,7 @@ def success_view(request):
     if request.method == 'POST':
         params = {}
         params['genre'] = request.POST.get("genre")
-        params['price_reizouko'] = request.POST.get("price_reizouko")
+        params['price_reizouko'] = request.POST.get("refrigerator_price")
         params['price_denshi'] = request.POST.get("price_denshi")
         params['price_sentakuki'] = request.POST.get("price_sentakuki")
         params['price_suihanki'] = request.POST.get("price_suihanki")
@@ -22,6 +22,7 @@ def success_view(request):
         params['price_soujiki'] = request.POST.get("price_soujiki")
         params['price_hair_dryer'] = request.POST.get("price_hair_dryer")
 
+        print(params)
         data = api(params)
 
         return render(request, 'myapp/views.html', {'data': data })
@@ -33,38 +34,32 @@ def input_view(request):
         'form' : CheckForm(),
         'btn' : 'select',
     }
-    if request.method == 'POST':
-        form = CheckForm(request.POST)
-        if form.is_valid():
-            params = {
+    return render(request, 'myapp/home.html', params)
+    
+def price_view(request):
+    params = {
                 'headtitle' : 'team5',
                 'title' : 'Select genere & budget!',
                 'btn' : 'get recommend',
-            } 
-            temp = form.cleaned_data.get('Need_items')
+        }
+    if request.method == 'POST':
+        form = CheckForm(request.POST)
+        if form.is_valid():
+            temp = form.cleaned_data.get('Need_items') 
 
             dyn_form = PriceForm()
             for k in temp:
-                dyn_form.fields[k.replace('_',' ')] = forms.IntegerField(\
+                dyn_form.fields[k] = forms.IntegerField(\
                             min_value=0)
             dyn_form.fields['budget_over'] = forms.BooleanField(required=False)
             params['form'] = dyn_form
 
-            return redirect('myapp/price.html')
+            return render(request, 'myapp/price.html', params)
+
         else:
-            return render(request, 'myapp/home.html', params)
+            redirect('myapp/home.html')
     else:
-        return render(request, 'myapp/home.html', params)
-    
-
-def price_view(request):
-    if request.method == 'POST':
-        print(request.GET(''))
-        form = PriceForm(request.POST.get('form'))
-        return render(request, 'myapp/price.html')
-
-    else:
-        return render(request, 'myapp/price.html')
+        return render(request, 'myapp/price.html', params)
 
 
 
@@ -162,7 +157,9 @@ def api(params):
     
 
 def get_products_info(price, genre_id, sort):
-    
+    if price == None or price == 0:
+        return 
+
     price = int(price)
 
     products = []
