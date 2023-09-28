@@ -4,23 +4,40 @@
 {% block bodyTitle %}商品検索結果{% endblock %}
 {% block content %}
 <div class="container">
-    <div class="row">
-        {% for category, items in data.items %}
-        {% if items %}
-        {% with item=items.0 %}
-        <div class="col-md-3">
-            <div class="card">
-                <img src="{{ item.image_url }}" class="card-img-top" alt="{{ item.name }}">
-                <div class="card-body">
-                    <h5 class="card-title">{{ item.name }}</h5>
-                    <p class="card-text">￥{{ item.price }}</p>
-                    <a href="{{ item.url }}" class="btn btn-primary" target="_blank">Link</a>
+    <form id="itemSelectionForm" action="{% url 'myapp:confirm_page' %}" method="post">
+        {% csrf_token %}
+        <div class="row">
+            {% for category, items in data.items %}
+            {% if items %}
+            {% with item=items.0 %}
+            <div class="col-md-3">
+                <div class="card">
+                    <img src="{{ item.image_url }}" class="card-img-top" alt="{{ item.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title" >{{ item.name }}</h5>
+                        <p class="card-text">￥{{ item.price }}</p>
+                        <a href="{{ item.url }}" class="btn btn-primary" target="_blank">Link</a>
+                    </div>
+                    <div class="card-footer">
+                        <div class="form-check form-check-inline">
+                            <input type="hidden" name="category" value="{{ category }}">
+                            <input type="hidden" name="name" value="{{ item.name }}">
+                            <input type="hidden" name="url" value="{{ item.url }}">
+                            <input type="hidden" name="price" value="{{ item.price }}">
+                            <input type="hidden" name="image_url" value="{{ item.image_url }}">
+                            <input type="checkbox" class="form-check-input" name="selected_categories" value="{{ category }}">
+                            <label class="form-check-label">選択</label>
+                        </div>
+                    </div>
                 </div>
             </div>
+            {% endwith %}
+            {% endif %}
+            {% endfor %}
         </div>
-        {% endwith %}
-        {% endif %}
-        {% endfor %}
-    </div>
+        <div class="mt-5 text-right">
+            <button type="submit" class="btn btn-primary">確認</button>
+        </div>
+    </form>
 </div>
 {% endblock %}

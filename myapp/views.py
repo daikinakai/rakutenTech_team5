@@ -21,10 +21,116 @@ def success_view(request):
         params["price_television"] = request.POST.get("price_television")
         params["price_soujiki"] = request.POST.get("price_soujiki")
         params["price_hair_dryer"] = request.POST.get("price_hair_dryer")
+        params['genre'] = request.POST.get("genre")
+        params['price_reizouko'] = request.POST.get("refrigerator_price")
+        params['price_denshi'] = request.POST.get("microwave_oven_price")
+        params['price_sentakuki'] = request.POST.get("washing_machine_price")
+        params['price_suihanki'] = request.POST.get("rice_cooker_price")
+        params['price_television'] = request.POST.get("television_price")
+        params['price_soujiki'] = request.POST.get("Vacuum_cleaner_price")
+        params['price_hair_dryer'] = request.POST.get("hair_dryer_price")
 
+        print(params)
         data = api(params)
 
         return render(request, "myapp/views.html", {"data": data})
+
+def input_view(request):
+    params = {
+        'headtitle' : 'team5',
+        'title' : 'Select genre & budget!',
+        'form' : CheckForm(),
+        'btn' : 'select',
+    }
+    return render(request, 'myapp/home.html', params)
+    
+def price_view(request):
+    params = {
+                'headtitle' : 'team5',
+                'title' : 'Select genere & budget!',
+                'btn' : 'get recommend',
+        }
+    if request.method == 'POST':
+        form = CheckForm(request.POST)
+        if form.is_valid():
+            temp = form.cleaned_data.get('Need_items') 
+
+            dyn_form = PriceForm()
+            for k in temp:
+                dyn_form.fields[k] = forms.IntegerField(\
+                            min_value=0)
+            dyn_form.fields['budget_over'] = forms.BooleanField(required=False)
+            params['form'] = dyn_form
+
+            return render(request, 'myapp/price.html', params)
+
+        else:
+            redirect('myapp/home.html')
+    else:
+        return render(request, 'myapp/price.html', params)
+
+
+
+# def input_view(request):
+#     if request.method == 'POST':
+#         form = MyForm(request.POST)
+#         if form.is_valid():
+#             # データが正常に処理された場合、リダイレクト
+#             return redirect('myapp:view_page')  
+#     else:
+#         form = MyForm()  # GETリクエストの場合、空のフォームを表示
+
+#     return render(request, 'myapp/home.html', {'form': form})
+
+
+def input_view(request):
+    params = {
+        'headtitle' : 'team5',
+        'title' : 'Select genre & budget!',
+        'form' : CheckForm(),
+        'btn' : 'select',
+    }
+    return render(request, 'myapp/home.html', params)
+    
+def price_view(request):
+    params = {
+                'headtitle' : 'team5',
+                'title' : 'Select genere & budget!',
+                'btn' : 'get recommend',
+        }
+    if request.method == 'POST':
+        form = CheckForm(request.POST)
+        if form.is_valid():
+            temp = form.cleaned_data.get('Need_items') 
+
+            dyn_form = PriceForm()
+            for k in temp:
+                dyn_form.fields[k] = forms.IntegerField(\
+                            min_value=0)
+            dyn_form.fields['budget_over'] = forms.BooleanField(required=False)
+            params['form'] = dyn_form
+
+            return render(request, 'myapp/price.html', params)
+
+        else:
+            redirect('myapp/home.html')
+    else:
+        return render(request, 'myapp/price.html', params)
+
+
+
+# def input_view(request):
+#     if request.method == 'POST':
+#         form = MyForm(request.POST)
+#         if form.is_valid():
+#             # データが正常に処理された場合、リダイレクト
+#             return redirect('myapp:view_page')  
+#     else:
+#         form = MyForm()  # GETリクエストの場合、空のフォームを表示
+
+#     return render(request, 'myapp/home.html', {'form': form})
+
+
 
 
 # def input_view(request):
@@ -44,7 +150,7 @@ def success_view(request):
 #                     'headtitle' : 'team5',
 #                     'title' : 'Select genere & budget!',
 #                     'btn' : 'get recommend',
-#                 }
+#                 } 
 #                 temp = form.cleaned_data.get('Need_items')
 
 #                 dyn_form = PriceForm()
@@ -66,26 +172,20 @@ def success_view(request):
 #                 if k != 'csrfmiddlewaretoken':
 #                     params[k] = request.POST[k]
 
-
+            
 #             params['title'] = 'view_list'
 #             params['headtitle'] = 'team5'
 #             del params['form'], params['btn']
-
-#             return redirect('myapp:view_page')
-
-
+            
+#             return redirect('myapp:view_page')  
+            
+            
 #     else:
 #         return render(request, 'myapp/home.html', params)
-def input_view(request):
-    if request.method == "POST":
-        form = MyForm(request.POST)
-        if form.is_valid():
-            # データが正常に処理された場合、リダイレクト
-            return redirect("myapp:view_page")
-    else:
-        form = MyForm()  # GETリクエストの場合、空のフォームを表示
+    
 
-    return render(request, "myapp/home.html", {"form": form})
+
+
 
 
 def api(params):
@@ -109,6 +209,9 @@ def api(params):
 
 
 def get_products_info(price, genre_id, sort):
+    if price == None or price == 0:
+        return 
+
     price = int(price)
 
     products = []
@@ -143,3 +246,21 @@ def get_products_info(price, genre_id, sort):
 
     except requests.exceptions.RequestException as e:
         return JsonResponse({"error": f"Request Error: {e}"}, status=500)
+
+
+def confirm_view(request):
+    total = 0
+    if request.method == "POST":
+        processed_data = {}
+        for selected_category in request.POST.getlist("selected_categories"):
+            index = request.POST.getlist("category").index(selected_category)
+            item = {
+                "name": request.POST.getlist("name")[index],
+                "url": request.POST.getlist("url")[index],
+                "price": request.POST.getlist("price")[index],
+                "image_url": request.POST.getlist("image_url")[index],
+            }
+            total += int(request.POST.getlist("price")[index])
+            processed_data[selected_category] = item
+
+        return render(request, "myapp/confirm.html", {"data": processed_data, "total": total})
