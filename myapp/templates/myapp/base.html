@@ -11,10 +11,12 @@
 </head>
 
 <body style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
+    {% block header %}{% endblock %}
     <div>
         <h1>{% block bodyTitle %}{% endblock %}</h1>
         {% block content %}{% endblock %}
     </div>
+    {% block footer %}{% endblock %}
 </body>
 
 </html>
