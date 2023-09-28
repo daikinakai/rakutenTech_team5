@@ -26,6 +26,60 @@ def success_view(request):
 
         return render(request, 'myapp/views.html', {'data': data })
 
+def input_view(request):
+    params = {
+        'headtitle' : 'team5',
+        'title' : 'Select genre & budget!',
+        'form' : CheckForm(),
+        'btn' : 'select',
+    }
+    if request.method == 'POST':
+        form = CheckForm(request.POST)
+        if form.is_valid():
+            params = {
+                'headtitle' : 'team5',
+                'title' : 'Select genere & budget!',
+                'btn' : 'get recommend',
+            } 
+            temp = form.cleaned_data.get('Need_items')
+
+            dyn_form = PriceForm()
+            for k in temp:
+                dyn_form.fields[k.replace('_',' ')] = forms.IntegerField(\
+                            min_value=0)
+            dyn_form.fields['budget_over'] = forms.BooleanField(required=False)
+            params['form'] = dyn_form
+
+            return redirect('myapp/price.html')
+        else:
+            return render(request, 'myapp/home.html', params)
+    else:
+        return render(request, 'myapp/home.html', params)
+    
+
+def price_view(request):
+    if request.method == 'POST':
+        print(request.GET(''))
+        form = PriceForm(request.POST.get('form'))
+        return render(request, 'myapp/price.html')
+
+    else:
+        return render(request, 'myapp/price.html')
+
+
+
+# def input_view(request):
+#     if request.method == 'POST':
+#         form = MyForm(request.POST)
+#         if form.is_valid():
+#             # データが正常に処理された場合、リダイレクト
+#             return redirect('myapp:view_page')  
+#     else:
+#         form = MyForm()  # GETリクエストの場合、空のフォームを表示
+
+#     return render(request, 'myapp/home.html', {'form': form})
+
+
 
 
 # def input_view(request):
@@ -77,16 +131,11 @@ def success_view(request):
             
 #     else:
 #         return render(request, 'myapp/home.html', params)
-def input_view(request):
-    if request.method == 'POST':
-        form = MyForm(request.POST)
-        if form.is_valid():
-            # データが正常に処理された場合、リダイレクト
-            return redirect('myapp:view_page')  
-    else:
-        form = MyForm()  # GETリクエストの場合、空のフォームを表示
+    
 
-    return render(request, 'myapp/home.html', {'form': form})
+
+
+
 
 def api(params):
     ITEM_GENRE_ID = {
