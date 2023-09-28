@@ -3,7 +3,7 @@ from django.http import JsonResponse
 import requests
 from .forms import CheckForm, PriceForm,MyForm
 from django import forms
-
+import time 
 
 APPLICATION_ID = "1098599347371457724"
 
@@ -98,16 +98,12 @@ def api(params):
         'soujiki': 204492,
         'hair_dryer': 502792,
     }
-    
-    products_info = {
-        'reizouko': get_products_info(params['price_reizouko'], ITEM_GENRE_ID['reizouko'], 'limit'),
-        'sentakuki':get_products_info(params['price_sentakuki'], ITEM_GENRE_ID['sentakuki'], 'limit'),
-        'denshi': get_products_info(params['price_denshi'], ITEM_GENRE_ID['denshi'], 'limit'),
-        'suihanki': get_products_info(params['price_suihanki'], ITEM_GENRE_ID['suihanki'], 'limit'),
-        'television': get_products_info(params['price_television'], ITEM_GENRE_ID['television'], 'limit'),
-        'soujiki': get_products_info(params['price_soujiki'], ITEM_GENRE_ID['soujiki'], 'limit'),
-        'hair_dryer': get_products_info(params['price_hair_dryer'], ITEM_GENRE_ID['hair_dryer'], 'limit'),
-    }
+
+    products_info = {}
+    for i, name in enumerate(list(ITEM_GENRE_ID.keys())):
+        products_info[name] = get_products_info(params[f"price_{name}"], ITEM_GENRE_ID[name], 'limit')
+        if i % 3 == 0:
+            time.sleep(1)
 
     return products_info
     
