@@ -129,11 +129,17 @@ def api(params):
         "hair_dryer": 502792,
     }
 
+    TARGET_ITEM_NAMES = []
+    for item_name in list(ITEM_GENRE_ID.keys()):
+        if params[f"price_{item_name}"] != None:
+            TARGET_ITEM_NAMES.append(item_name)
+
+    print("TARGET_ITEM_NAMES!!")
+    print(TARGET_ITEM_NAMES)
+
     products_info = {}
-    for i, name in enumerate(list(ITEM_GENRE_ID.keys())):
+    for i, name in enumerate(TARGET_ITEM_NAMES):
         products_info[name] = get_products_info(params[f"price_{name}"], ITEM_GENRE_ID[name], "limit")
-        if i % 3 == 0:
-            time.sleep(1)
 
     return products_info
 
