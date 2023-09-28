@@ -5,7 +5,7 @@
 {% block content %}
 <div class="container py-5">
     <h1>{{title}}</h1>
-    <form method="post">{% csrf_token %}
+    <form method="post" action = "{% url 'myapp:view_page' %}">{% csrf_token %}
         <table>
             {{ form.as_table }}
             <tr>
