@@ -1,27 +1,26 @@
-
 {% extends "myapp/base.html" %}
 
 {% block headerTitle %}商品検索結果{% endblock %}
 {% block bodyTitle %}商品検索結果{% endblock %}
 {% block content %}
-    <div class="container">
-        <div class="row">
-            {% for category, items in data.items %}
-            {% if items %}
-            {% with item=items.0 %}
-            <div class="col-md-3">
-                <div class="card">
-                    <img src="{{ item.image_url }}" class="card-img-top" alt="{{ item.name }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ item.name }}</h5>
-                        <p class="card-text">￥{{ item.price }}</p>
-                        <a href="{{ item.url }}" class="btn btn-primary" target="_blank">Link</a>
-                    </div>
+<div class="container">
+    <div class="row">
+        {% for category, items in data.items %}
+        {% if items %}
+        {% with item=items.0 %}
+        <div class="col-md-3">
+            <div class="card">
+                <img src="{{ item.image_url }}" class="card-img-top" alt="{{ item.name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ item.name }}</h5>
+                    <p class="card-text">￥{{ item.price }}</p>
+                    <a href="{{ item.url }}" class="btn btn-primary" target="_blank">Link</a>
                 </div>
             </div>
-            {% endwith %}
-            {% endif %}
-            {% endfor %}
         </div>
+        {% endwith %}
+        {% endif %}
+        {% endfor %}
     </div>
+</div>
 {% endblock %}
