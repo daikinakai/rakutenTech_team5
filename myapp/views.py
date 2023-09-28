@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 import requests
-from .forms import MyForm
+from .forms import CheckForm, PriceForm
+from django import forms
+
 
 APPLICATION_ID = "1098599347371457724"
 
@@ -19,16 +21,66 @@ def success_view(request):
 
         return render(request, 'myapp/views.html', {'data': data })
 
-def input_view(request):
-    if request.method == 'POST':
-        form = MyForm(request.POST)
-        if form.is_valid():
-            # データが正常に処理された場合、リダイレクト
-            return redirect('myapp:view_page')  
-    else:
-        form = MyForm()  # GETリクエストの場合、空のフォームを表示
 
-    return render(request, 'myapp/home.html', {'form': form})
+
+def input_view(request):
+    params = {
+        'headtitle' : 'team5',
+        'title' : 'Select genre & budget!',
+        'form' : CheckForm(),
+        'btn' : 'select',
+    }
+
+    if request.method == 'POST':
+        keys = request.POST.keys()
+        if 'genre' in keys and 'Need_items' in keys:
+            form = CheckForm(request.POST)
+            if form.is_valid():
+                params = {
+                    'headtitle' : 'team5',
+                    'title' : 'Select genere & budget!',
+                    'btn' : 'get recommend',
+                } 
+                temp = form.cleaned_data.get('Need_items')
+
+                dyn_form = PriceForm()
+                for k in temp:
+                    dyn_form.fields[k.replace('_',' ')] = forms.IntegerField(\
+                                min_value=0)
+                dyn_form.fields['budget_over'] = forms.BooleanField(required=False)
+                params['form'] = dyn_form
+                return render(request, 'myapp/home.html', params)
+            else:
+                return render(request, 'myapp/home.html', params)
+        # 金額入力
+        elif 'refrigerator price' in keys\
+            or 'microwave oven price' in keys\
+                or 'washing machine price' in keys:
+
+            for k in keys:
+                if k != 'csrfmiddlewaretoken':
+                    params[k] = request.POST[k]
+
+            
+            params['title'] = 'view_list'
+            params['headtitle'] = 'team5'
+            del params['form'], params['btn']
+            
+            return redirect('myapp:view_page')  
+            
+            
+    else:
+        return render(request, 'myapp/home.html', params)
+# def input_view(request):
+#     if request.method == 'POST':
+#         form = MyForm(request.POST)
+#         if form.is_valid():
+#             # データが正常に処理された場合、リダイレクト
+#             return redirect('myapp:view_page')  
+#     else:
+#         form = MyForm()  # GETリクエストの場合、空のフォームを表示
+
+#     return render(request, 'myapp/home.html', {'form': form})
 
 def api(params):
     ITEM_GENRE_ID = {
