@@ -16,6 +16,12 @@ class MyForm(forms.Form):
     price_soujiki = forms.IntegerField()
     price_hair_dryer = forms.IntegerField()
 
+class genreForm(forms.Form):
+    data = [
+        ('home appliances', 'home appliances'),
+        ('camp items', 'camp items')]
+    genre = forms.ChoiceField(label='genre', choices=data)
+
 class CheckForm(forms.Form):
     data = [('home appliances', 'home appliances')]
     genre = forms.ChoiceField(label='genre', choices=data)
@@ -40,7 +46,7 @@ class CheckForm(forms.Form):
         super().clean()
         entries = self.cleaned_data
         if len(entries["Need_items"]) > 3:
-            raise ValidationError('最大で3つまで選択できます。')
+            raise forms.ValidationError('最大で3つまで選択できます。')
         return entries
 
 

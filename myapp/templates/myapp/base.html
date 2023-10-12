@@ -10,13 +10,18 @@
     </title>
 </head>
 
-<body style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
-    {% block header %}{% endblock %}
-    <div>
+<body style="display: flex; justify-content: center;">
+    <header>
+        <div class="bg-dark text-white text-center py-2 fixed-top">
+            {% block header %}{% endblock %}
+        </div>
+    </header>
+    <div class="main" style="margin-top: 70px; margin-bottom: 70px;">
         <h1>{% block bodyTitle %}{% endblock %}</h1>
         {% block content %}{% endblock %}
     </div>
-    {% block footer %}{% endblock %}
+    <footer class="bg-dark text-white text-center py-2 fixed-bottom">
+        {%block footer%}{%endblock%}
+    </footer>
 </body>
-
 </html>

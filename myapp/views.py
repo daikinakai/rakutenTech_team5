@@ -30,44 +30,44 @@ def success_view(request):
         params['price_soujiki'] = request.POST.get("Vacuum_cleaner_price")
         params['price_hair_dryer'] = request.POST.get("hair_dryer_price")
 
-        print(params)
+        # print(params)
         data = api(params)
 
         return render(request, "myapp/views.html", {"data": data})
 
-def input_view(request):
-    params = {
-        'headtitle' : 'team5',
-        'title' : 'Select genre & budget!',
-        'form' : CheckForm(),
-        'btn' : 'select',
-    }
-    return render(request, 'myapp/home.html', params)
+# def input_view(request):
+#     params = {
+#         'headtitle' : 'team5',
+#         'title' : 'Select genre & budget!',
+#         'form' : CheckForm(),
+#         'btn' : 'select',
+#     }
+#     return render(request, 'myapp/home.html', params)
     
-def price_view(request):
-    params = {
-                'headtitle' : 'team5',
-                'title' : 'Select genere & budget!',
-                'btn' : 'get recommend',
-        }
-    if request.method == 'POST':
-        form = CheckForm(request.POST)
-        if form.is_valid():
-            temp = form.cleaned_data.get('Need_items') 
+# def price_view(request):
+#     params = {
+#                 'headtitle' : 'team5',
+#                 'title' : 'Select genere & budget!',
+#                 'btn' : 'get recommend',
+#         }
+#     if request.method == 'POST':
+#         form = CheckForm(request.POST)
+#         if form.is_valid():
+#             temp = form.cleaned_data.get('Need_items') 
 
-            dyn_form = PriceForm()
-            for k in temp:
-                dyn_form.fields[k] = forms.IntegerField(\
-                            min_value=0)
-            dyn_form.fields['budget_over'] = forms.BooleanField(required=False)
-            params['form'] = dyn_form
+#             dyn_form = PriceForm()
+#             for k in temp:
+#                 dyn_form.fields[k] = forms.IntegerField(\
+#                             min_value=0)
+#             dyn_form.fields['budget_over'] = forms.BooleanField(required=False)
+#             params['form'] = dyn_form
 
-            return render(request, 'myapp/price.html', params)
+#             return render(request, 'myapp/price.html', params)
 
-        else:
-            redirect('myapp/home.html')
-    else:
-        return render(request, 'myapp/price.html', params)
+#         else:
+#             redirect('myapp/home.html')
+#     else:
+#         return render(request, 'myapp/price.html', params)
 
 
 
@@ -91,7 +91,7 @@ def input_view(request):
         'btn' : 'select',
     }
     return render(request, 'myapp/home.html', params)
-    
+
 def price_view(request):
     params = {
                 'headtitle' : 'team5',
@@ -101,7 +101,7 @@ def price_view(request):
     if request.method == 'POST':
         form = CheckForm(request.POST)
         if form.is_valid():
-            temp = form.cleaned_data.get('Need_items') 
+            temp = form.cleaned_data.get('Need_items')
 
             dyn_form = PriceForm()
             for k in temp:

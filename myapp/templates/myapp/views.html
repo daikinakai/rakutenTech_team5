@@ -1,12 +1,10 @@
 {% extends "myapp/base.html" %}
-
-
-
-{% block headerTitle %}商品検索結果{% endblock %}
-
-{% block bodyTitle %}商品検索結果{% endblock %}
+{% block headTitle %}{{headtitle}}{% endblock %}
+{% block header %}
+    <h1>select genre & budget!</h1>
+{% endblock %}
 {% block content %}
-<div class="container">
+<div class="container py-5">
     <form id="itemSelectionForm" action="{% url 'myapp:confirm_page' %}" method="post">
         {% csrf_token %}
         <div class="row">
@@ -45,3 +43,6 @@
     </form>
 </div>
 {% endblock %}
+{%block footer%}
+    <p>&copy; 2023 select genre & budget!</p>
+{%endblock%}
