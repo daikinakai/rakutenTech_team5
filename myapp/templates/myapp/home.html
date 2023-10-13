@@ -24,27 +24,27 @@
             </tr>
         </table>
 </div>
-    <script>
-        var form = document.getElementById('myForm');
-        var checkboxes = form.querySelectorAll('input[type="checkbox"]');
+<script>
+    var form = document.getElementById('myForm');
+    var checkboxes = form.querySelectorAll('input[type="checkbox"]');
 
-        form.addEventListener('submit', function (event) {
-            var checkedCount = 0;
+    form.addEventListener('submit', function (event) {
+        var checkedCount = 0;
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                checkedCount++;
+            }
+        }
+
+        if (checkedCount !== 3) {
+            alert('select 3 items');
             for (var i = 0; i < checkboxes.length; i++) {
-                if (checkboxes[i].checked) {
-                    checkedCount++;
-                }
+                checkboxes[i].checked = false;
             }
-
-            if (checkedCount !== 3) {
-                alert('3つの選択肢を選択してください。');
-                for (var i = 0; i < checkboxes.length; i++) {
-                    checkboxes[i].checked = false;
-                }
-                event.preventDefault();  // フォームのデフォルトの送信を防止
-            }
-        });
-    </script>
+            event.preventDefault();  // フォームのデフォルトの送信を防止
+        }
+    });
+</script>
 {% endblock %}
 {% block footer %}
 <footer class="bg-dark text-white text-center py-3 fixed-bottom">
