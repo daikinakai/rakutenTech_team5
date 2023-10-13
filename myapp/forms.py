@@ -2,12 +2,13 @@ from typing import Any
 from django import forms
 from django.core.exceptions import ValidationError
 
+
 class MyForm(forms.Form):
     # TODO:整数型
     # username = forms.CharField(label='ユーザー名', max_length=100)
 
-    data = [('home appliances', 'home appliances')]
-    genre = forms.ChoiceField(label='genre', choices=data)
+    data = [("home appliances", "home appliances")]
+    genre = forms.ChoiceField(label="genre", choices=data)
     price_reizouko = forms.IntegerField()
     price_denshi = forms.IntegerField()
     price_sentakuki = forms.IntegerField()
@@ -18,8 +19,8 @@ class MyForm(forms.Form):
 
 
 class CheckForm(forms.Form):
-    data = [('home appliances', 'home appliances')]
-    genre = forms.ChoiceField(label='genre', choices=data)
+    data = [("home appliances", "home appliances")]
+    genre = forms.ChoiceField(label="genre", choices=data)
 
     home_appliances_choices = [
         ("refrigerator_price", "refrigerator"),
@@ -36,16 +37,14 @@ class CheckForm(forms.Form):
         widget=forms.CheckboxSelectMultiple,
         choices=home_appliances_choices,
     )
-    
+
     def clean(self):
         super().clean()
         entries = self.cleaned_data
-        if len(entries["Need_items"]) > 3:
-            raise ValidationError('最大で3つまで選択できます。')
+        if len(entries["Need_items"]) != 3:
+            raise ValidationError("最大で3つまで選択できます。")
         return entries
 
 
-            
-    
 class PriceForm(forms.Form):
     pass
